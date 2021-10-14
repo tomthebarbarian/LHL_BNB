@@ -221,10 +221,42 @@ exports.getAllProperties = getAllProperties;
  * @param {{}} property An object containing all of the property details.
  * @return {Promise<{}>} A promise to the property.
  */
+// const addProperty = function(property) {
+//   const propertyId = Object.keys(properties).length + 1;
+//   property.id = propertyId;
+//   properties[propertyId] = property;
+//   return Promise.resolve(property);
+// };
+
+
 const addProperty = function(property) {
-  const propertyId = Object.keys(properties).length + 1;
-  property.id = propertyId;
-  properties[propertyId] = property;
-  return Promise.resolve(property);
+  const {owner_id , title , description , thumbnail_photo_url , cover_photo_url , 
+    cost_per_night,parking_spaces, number_of_bathrooms, number_of_bedrooms,
+    country, street, city, province, post_code} = property;
+  
+  const queryParams = [owner_id , title , description , thumbnail_photo_url , cover_photo_url , 
+    cost_per_night, parking_spaces, number_of_bathrooms, number_of_bedrooms,
+    country, street, city, province, post_code];
+  console.log(queryParams);
+  const queryStr = `
+  INSERT INTO properties (
+    owner_id , title , description , thumbnail_photo_url , cover_photo_url , 
+    cost_per_night,parking_spaces, number_of_bathrooms, number_of_bedrooms, 
+    country, street, city, province, post_code)
+    VALUES ($1, $2 ,$3, $4, $5, $6, $7, $8, $9, $10, $11 , $12, $13 , $14)
+    RETURNING *;
+    `;
+  return pool
+    .query(queryStr, queryParams)
+    .then((result) => {
+      console.log(result.rows);
+      return result.rows;
+    })
+    .catch((err) => {
+      console.log(err.message);
+      return err.message;
+    });
 };
+
+
 exports.addProperty = addProperty;
