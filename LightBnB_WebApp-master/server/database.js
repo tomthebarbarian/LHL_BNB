@@ -35,7 +35,8 @@ const getUserWithEmail = function(email) {
     (result) => {
       // console.log(result);
       // console.log('returning',result.rows);
-      return result.rows;
+      // console.log('returning',result.rows[0].password);
+      return result.rows[0];
     }
   ).catch(
     (err) => {
@@ -60,16 +61,16 @@ const getUserWithId = function(id) {
     `
     SELECT *
     FROM users
-    WHERE users.id LIKE $1
-    `, [`'%${id}%'`]
+    WHERE users.id = $1
+    `, [`${id}`]
   ).then(
     (result) => {
-      console.log('returning',result.rows);
-      return result.rows;
+      // console.log('returning id',result.rows);
+      return result.rows[0];
     }
   ).catch(
     (err) => {
-      console.log('returning err', err.message);
+      console.log('returning id err', err.message);
       return err.message;
     });
 };
