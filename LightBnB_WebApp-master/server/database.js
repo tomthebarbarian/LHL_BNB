@@ -1,23 +1,4 @@
-const properties = require('./json/properties.json');
-const users = require('./json/users.json');
-
-const { Pool } = require('pg');
-
-
-// Pool Closure for other function
-const pool = new Pool({
-  user: 'tomzhang',
-  password: '',
-  host: 'localhost',
-  database: 'lightbnb'
-});
-
-const helpPool = {
-  query : (text, params) => {
-    return pool.query(text, params);
-  }
-};
-
+const helpPool = require('./dbAcces.js');
 /// Users
 
 /**
